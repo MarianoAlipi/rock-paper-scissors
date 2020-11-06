@@ -15,8 +15,8 @@ let waitingToRestart = false;
 
 let socket = null;
 
-const ADDRESS = "http://localhost";
-const PORT = ":8080";
+const ADDRESS = "https://rock-paper-scissors-mariano.herokuapp.com";
+const PORT = "";
 
 const outcomes = {
     'rock': {
@@ -575,7 +575,7 @@ document.addEventListener("DOMContentLoaded", (_) => {
     document.getElementById("create-nickname").focus();
     document.getElementById("create-nickname").select();
 
-    socket = io.connect(`${ADDRESS}${PORT}`);
+    socket = io.connect(`${ADDRESS}${PORT}`), {secure: true};
     socket.on('connect', () => {
         console.log("Connected through Socket.io.");
     });
