@@ -15,7 +15,7 @@ let waitingToRestart = false;
 
 let socket = null;
 
-const ADDRESS = "localhost";
+const ADDRESS = "http://localhost";
 const PORT = ":8080";
 
 const outcomes = {
@@ -575,7 +575,7 @@ document.addEventListener("DOMContentLoaded", (_) => {
     document.getElementById("create-nickname").focus();
     document.getElementById("create-nickname").select();
 
-    socket = io.connect(`${ADDRESS}${PORT}`), {secure: true};
+    socket = io.connect(`${ADDRESS}${PORT}`);
     socket.on('connect', () => {
         console.log("Connected through Socket.io.");
     });
