@@ -15,7 +15,7 @@ app.use(cors())
 
 // Connect to MongoDB.
 console.log("Connecting to MongoDB database...");
-mongoose.connect(process.env.MONGODB_URI, {useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true});
+mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/exam2-rockPaperScissors", {useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true});
 const db = mongoose.connection;
 // On error...
 db.on('error', console.error.bind(console, 'Connection error:'));
@@ -59,7 +59,7 @@ db.once('open', function() {
         });
     
         // When the connection is lost.
-        socket.on('disconnect', (data) => {
+        socket.on('disconnect', async (data) => {
             
             console.log(`${socket.id} disconnected (Socket.io).`);
 
