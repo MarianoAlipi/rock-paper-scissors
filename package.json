@@ -1,20 +1,27 @@
 {
-  "name": "back",
+  "name": "rock-paper-scissors-mariano",
   "version": "1.0.0",
-  "description": "",
+  "description": "A rock, paper, scissors game!",
   "main": "server.js",
-  "engines": {
-    "npm": "6.x"
-  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node ./server.js"
+    "start": "node server.js"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "rock",
+    "paper",
+    "scissors",
+    "mongoose",
+    "mongodb"
+  ],
+  "author": "Mariano Alipi <marianoalipi@gmail.com>",
   "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MarianoAlipi/rock-paper-scissors/issues"
+  },
+  "homepage": "https://github.com/MarianoAlipi/rock-paper-scissors#readme",
   "dependencies": {
-    "axios": "^0.20.0",
+    "axios": "^0.21.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "mongoose": "^5.10.12"
