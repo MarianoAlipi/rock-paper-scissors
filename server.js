@@ -36,7 +36,7 @@ db.once('open', function() {
     console.log("Connected to MongoDB database.\n");
 
     let server = app.listen(port);
-    io = require('socket.io').listen(server);
+    io = require('socket.io')(server);
 
     const gameSchema = new mongoose.Schema({
         // Games should be deleted when the host leaves so game IDs can be reused later.
