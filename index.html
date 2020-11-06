@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <!-- Mariano García Alipi - A00822247 -->
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rock, paper, scissors!</title>
+    <link rel="icon" type="image/png" href="./img/crown.png">
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    
+    <!-- Local CSS -->
+    <link rel="stylesheet" href="./style.css">
+    <!-- Local JavaScript -->
+    <script src="./index.js"></script>
+</head>
+
+<body>
+    
+    <!-- Main content wrapper -->
+    <div id="main" class="container d-flex flex-column p-0 mw-100 h-100">
+
+        <!-- Navbar / header -->
+        <nav id="title" class="navbar">
+            <span class="navbar-brand">Rock, paper, scissors!</span>
+            <span id="nav-game-id-label">Game ID: <span id="nav-game-id" class="m-0 p-0">&nbsp;-&nbsp;</span></span>
+        </nav>
+
+        <!-- Actions -->
+        <div id="forms-area" class="row flex-grow-0 mb-3 mx-0 justify-content-center">
+
+            <!-- Create game -->
+            <div class="col-12 col-sm-5 col-md-5 col-lg-4 col-xl-3">
+                <div class="card">
+
+                    <div class="card-header pb-1">
+                        <h5>Create game</h5>
+                    </div>
+
+                    <div class="card-body pb-3">
+                        
+                        <label for="create-nickname" class="form-text">Nickname: </label>
+                        <input type="text" id="create-nickname" name="create-nickname" maxlength="15" class="form-control">
+
+                        <button class="btn btn-primary float-right col-12 mt-3" id="create-btn">Create</button>
+                    </div>
+
+                </div> <!-- end of create game card -->
+            </div> <!-- end of create game wrapper -->
+
+            <div class="col-1 lead text-center my-auto px-0 py-3">or</div>
+
+            <!-- Join game -->
+            <div class="col-12 col-sm-5 col-md-5 col-lg-4 col-xl-3">
+                <div class="card">
+                    <div class="card-header pb-1">
+                        <h5>Join game</h5>
+                    </div>
+
+                    <div class="card-body pb-3">    
+                        <div class="row">
+                            <div class="col-8 col-sm-7 col-md-8">
+                                <label for="join-nickname" class="form-text">Nickname: </label>
+                                <input type="text" id="join-nickname" name="join-nickname" maxlength="15" class="form-control">
+                            </div>
+
+                            <div class="col-4 col-sm-5 col-md-4">
+                                <label for="join-id" class="form-text">Game ID: </label>
+                                <input type="number" id="join-id" name="join-id" class="form-control" placeholder="0000">
+                            </div>
+                        </div>
+                        <button class="btn btn-primary float-right col-12 mt-3" id="join-btn">Join</button>
+                    </div>
+
+                </div> <!-- end of join game card -->
+            </div> <!-- end of join game wrapper -->
+        </div> <!-- end of actions div -->
+
+        <!-- Game container -->
+        <div id="game-container" class="container d-none flex-column mw-100 p-sm-0">
+
+            <!-- Row with the 'leave' button and the game info -->
+            <div class="row d-flex justify-content-between mx-2 text-center">
+
+                <!-- 'Leave' button on desktop and large displays -->
+                <button class="leave-btn btn btn-danger col-sm-2 col-lg-1 d-none d-sm-block">Leave</button>
+
+                <!-- Game info -->
+                <div class="game-info col-12 col-sm-4">
+                    <span><strong>Host: </strong><span id="host-name">&nbsp;-&nbsp;</span><span class="d-none" id="you-host"> (you)</span></span>
+                    <br>
+                    <span><strong>Guest: </strong><span id="guest-name">&nbsp;-&nbsp;</span><span class="d-none" id="you-guest"> (you)</span></span>
+                </div>
+
+            </div>
+
+            <!-- Choices display table -->
+            <div class="d-none flex-column mt-n1" id="choices-display">
+                <table class="align-self-center">
+                    <thead>
+                        <tr>
+                            <th>Your choice</th>
+                            <th></th>
+                            <th>Your opponent's<br>choice</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><img id="your-choice" src="./img/question.png"></td>
+                            <td><img src="./img/versus.png" id="versus-img"></td>
+                            <td><img id="opponent-choice" src="./img/question.png"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- The buttons for the choices (rock, paper, scissors) -->
+            <div class="d-none flex-wrap flex-row justify-content-center mb-3" id="game-buttons">
+
+                <button id="rock-btn" class="choice-btn" value="rock"><img src="./img/rock.png"></button>
+                <button id="paper-btn" class="choice-btn" value="paper"><img src="./img/paper.png"></button>
+                <button id="scissors-btn" class="choice-btn" value="scissors"><img src="./img/scissors.png"></button>
+
+            </div>
+
+            <!-- Lonely (for when a guest hasn't joined) -->
+            <div id="lonely" class="row d-none flex-column text-center align-content-center mx-0 mb-3">
+                <span class="lead mb-3">It sure is lonely around here...</span>
+                <img class="align-self-center col-6 col-sm-4 col-md-2 col-lg-2 col-xl-1" src="./img/lonely.png">
+                <small class="mt-3">Share your game ID with a friend!</small>
+            </div>
+
+            <!-- Leave button on mobile devices -->
+            <button class="leave-btn btn btn-danger col-12 d-block d-sm-none mb-3">Leave</button>
+            
+        </div>
+        
+    </div> <!-- end of main container -->
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="row m-0">
+
+            <div class="col-12 col-sm-8" id="icons-ref">
+                <small class="d-block">Icons by
+                    <a class="btn-link" href="https://www.flaticon.es/autores/freepik" title="Freepik">Freepik</a>,
+                    <a class="btn-link" href="https://www.flaticon.com/authors/vectors-market" title="Vectors Market">Vectors Market</a>,
+                    <a class="btn-link" href="https://www.flaticon.com/authors/pixel-perfect" title="Pixel perfect">Pixel perfect</a>,
+                    <a class="btn-link" href="https://www.flaticon.com/authors/smashicons" title="Smashicons">Smashicons</a>,
+                    <a class="btn-link" href="https://www.flaticon.com/authors/vitaly-gorbachev" title="Vitaly Gorbachev">Vitaly Gorbachev</a> and
+                    <a href="https://www.flaticon.com/authors/smalllikeart" title="smalllikeart">smalllikeart</a>
+                from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a> and
+                <a href="https://www.icons8.com" title="Icons8">Icons8</a>
+                </small>
+            </div>
+            
+            
+            <div class="col-12 col-sm-4" id="dev-ref">
+                <br class="d-block d-sm-none">
+                <small class="d-block">Mariano García Alipi — A00822247</small>
+            </div>
+
+        </div> <!-- end of container row -->
+    </footer>
+
+    <!-- Sweet Alert -->
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <!-- Bootstrap -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
+
+
+</body>
+</html>
