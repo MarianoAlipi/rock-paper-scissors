@@ -46,6 +46,8 @@ db.once('open', function() {
     // When a user connects.
     io.on('connection', (socket) => {
 
+        console.log(`${socket.id} connected through Socket.io.`);
+
         // Custom 'bind-id' event.
         socket.on('bind-id', (data) => {
             console.log("bind-id:");
@@ -59,6 +61,8 @@ db.once('open', function() {
         // When the connection is lost.
         socket.on('disconnect', (data) => {
             
+            console.log(`${socket.id} disconnected (Socket.io).`);
+
             const conn = connections[socket.id];
 
             if (conn != null) {
