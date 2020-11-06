@@ -4,7 +4,7 @@ const axios = require('axios')
 const { response } = require('express')
 const mongoose = require('mongoose')
 const app = express()
-const port = 8080
+const port = process.env.PORT || 8080
 
 app.use(express.json())
 app.use(express.urlencoded({
