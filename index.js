@@ -13,8 +13,10 @@ let ended = false;
 // 'play again' or to leave.
 let waitingToRestart = false;
 
-const ADDRESS = "https://rock-paper-scissors-mariano.herokuapp.com";
-const PORT = "";
+let socket = null;
+
+const ADDRESS = "localhost";
+const PORT = ":8080";
 
 const outcomes = {
     'rock': {
@@ -58,6 +60,8 @@ let create_game_handler = (_) => {
             isHost = true;
             console.log("Game ID: " + gameID);
             updateUI();
+
+            socket.emit('bind-id', {gameID, isHost} );
 
             $('#lonely').fadeIn();
             document.querySelector("#lonely").classList.add("d-flex");
@@ -120,10 +124,14 @@ let join_game_handler = (_) => {
     .then(resp => {
         
         if (resp.status == 200) {
+
+            
             gameState = resp.data;
             gameID = resp.data.gameID;
             isHost = false;
             updateUI();
+
+            socket.emit('bind-id', {gameID, isHost} );
 
             swal({
                 title: `Joined ${gameState.nicknameHost}'s game! 😁`,
@@ -566,5 +574,10 @@ document.addEventListener("DOMContentLoaded", (_) => {
 
     document.getElementById("create-nickname").focus();
     document.getElementById("create-nickname").select();
+
+    socket = io(ADDRESS);
+    socket.on('connect', () => {
+        console.log("Connected through Socket.io.");
+    });
 
 });
