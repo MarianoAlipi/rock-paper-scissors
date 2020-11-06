@@ -4,6 +4,7 @@ const axios = require('axios')
 const { response } = require('express')
 const mongoose = require('mongoose')
 const app = express()
+const io = require('socket.io')();
 const port = process.env.PORT || 8080
 
 app.use(express.json())
@@ -22,6 +23,10 @@ db.on('error', console.error.bind(console, 'Connection error:'));
 // On success...
 db.once('open', function() {
     
+    // Object with the connections.
+    // Each key has a {gameID: "1234", isHost: true}.
+    let connections = {};
+
     console.log("Connected to MongoDB database.\n");
 
     const gameSchema = new mongoose.Schema({
@@ -38,6 +43,49 @@ db.once('open', function() {
 
     const Game = mongoose.model('Game', gameSchema);
     
+    // When a user connects.
+    io.on('connection', (socket) => {
+
+        // Custom 'bind-id' event.
+        socket.on('bind-id', (data) => {
+            console.log("bind-id:");
+            console.log(data);
+            connections[socket.id] = {
+                gameID: data.gameID,
+                isHost: data.isHost
+            };
+        });
+    
+        // When the connection is lost.
+        socket.on('disconnect', (data) => {
+            
+            const conn = connections[socket.id];
+
+            if (conn != null) {
+
+                const game = await Game.findOne({gameID: conn.gameID}).exec();
+
+                if (game != null) {
+                    // If it was the host, delete the game.
+                    if (conn.isHost) {
+                        game.deleteOne();
+                    // If it was the guest, set the guest to null in the database.
+                    } else {
+                        game.nicknameGuest = null;
+                        try {
+                            game.save();
+                        } catch(error) {
+                            console.log(error);
+                        }
+                    }
+                }
+                // Delete from the connections dictionary.
+                delete connections[socked.id];
+            }
+    
+        }); 
+    });
+
     // Routes.
     // Ignore favicon.
     app.get('/favicon.ico', (req, res) => res.status(204));
