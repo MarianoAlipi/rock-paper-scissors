@@ -13,7 +13,7 @@ app.use(express.urlencoded({
 }))
 app.use(cors());
 app.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "https://marianoalipi.github.io https://www.github.com https://github.com");
+    res.header("Access-Control-Allow-Origin", "https://marianoalipi.github.io");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
 });
