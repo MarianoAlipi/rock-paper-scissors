@@ -4,7 +4,7 @@ const axios = require('axios')
 const { response } = require('express')
 const mongoose = require('mongoose')
 const app = express()
-const io = require('socket.io')();
+let io = null; // require('socket.io')();
 const port = process.env.PORT || 8080
 
 app.use(express.json())
@@ -290,6 +290,7 @@ db.once('open', function() {
         }
     });
 
-    app.listen(port);
+    let server = app.listen(port);
+    io = require('socket.io').listen(server);
 
 }); // end of on successful connection to MongoDB
