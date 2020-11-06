@@ -575,7 +575,7 @@ document.addEventListener("DOMContentLoaded", (_) => {
     document.getElementById("create-nickname").focus();
     document.getElementById("create-nickname").select();
 
-    socket = io(ADDRESS);
+    socket = io.connect(`${ADDRESS}${PORT}`);
     socket.on('connect', () => {
         console.log("Connected through Socket.io.");
     });
