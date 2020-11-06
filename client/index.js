@@ -13,8 +13,8 @@ let ended = false;
 // 'play again' or to leave.
 let waitingToRestart = false;
 
-const ADDRESS = "localhost";
-const PORT = "8080";
+const ADDRESS = "https://rock-paper-scissors-mariano.herokuapp.com";
+const PORT = "";
 
 const outcomes = {
     'rock': {
@@ -49,7 +49,7 @@ let create_game_handler = (_) => {
     }
 
     axios
-    .post(`http://${ADDRESS}:${PORT}/create/${nickname}`) 
+    .post(`${ADDRESS}/create/${nickname}`) 
     .then(resp => {
 
         if (resp.status == 201) {
@@ -116,7 +116,7 @@ let join_game_handler = (_) => {
     }
     
     axios
-    .get(`http://${ADDRESS}:${PORT}/join/${gameIDToJoin},${nickname}`)
+    .get(`${ADDRESS}/join/${gameIDToJoin},${nickname}`)
     .then(resp => {
         
         if (resp.status == 200) {
@@ -186,7 +186,7 @@ let choice_buttons_handler = (e) => {
     }
 
     const choice = e.target.value;
-    const request = `http://${ADDRESS}:${PORT}/choice/${gameID},${isHost},${choice}`;
+    const request = `${ADDRESS}/choice/${gameID},${isHost},${choice}`;
     
     axios
     .post(request)
@@ -214,7 +214,7 @@ let get_game_state = () => {
     }
     
     axios
-    .get(`http://${ADDRESS}:${PORT}/getState/${gameID}`)
+    .get(`${ADDRESS}/getState/${gameID}`)
     .then(resp => {
         if (resp.status == 200) {
             gameState = resp.data;
@@ -277,7 +277,7 @@ let update_player_status = (status) => {
     }
     
     axios
-    .post(`http://${ADDRESS}:${PORT}/playerStatus/${gameID},${isHost},${status}`)
+    .post(`${ADDRESS}/playerStatus/${gameID},${isHost},${status}`)
     .then(resp => {
         if (resp.status == 200) {
 
