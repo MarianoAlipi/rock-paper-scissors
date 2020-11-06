@@ -35,6 +35,9 @@ db.once('open', function() {
 
     console.log("Connected to MongoDB database.\n");
 
+    let server = app.listen(port);
+    io = require('socket.io').listen(server);
+
     const gameSchema = new mongoose.Schema({
         // Games should be deleted when the host leaves so game IDs can be reused later.
         // While a game is active, the ID should be unique.
@@ -289,8 +292,5 @@ db.once('open', function() {
             res.send("error:game_does_not_exist");
         }
     });
-
-    let server = app.listen(port);
-    io = require('socket.io').listen(server);
-
+    
 }); // end of on successful connection to MongoDB
