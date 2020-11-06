@@ -14,7 +14,7 @@ app.use(cors())
 
 // Connect to MongoDB.
 console.log("Connecting to MongoDB database...");
-mongoose.connect('mongodb://localhost/exam2-rockPaperScissors', {useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true});
+mongoose.connect(process.env.MONGODB_URI, {useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true});
 const db = mongoose.connection;
 // On error...
 db.on('error', console.error.bind(console, 'Connection error:'));
