@@ -41,6 +41,13 @@ db.once('open', function() {
     // Routes.
     // Ignore favicon.
     app.get('/favicon.ico', (req, res) => res.status(204));
+  
+    // Default route.
+    app.get('/', (req, res) => {
+        res.status(204);
+        res.send("Hello, world!");
+    });
+  
     // Create game.
     app.post('/create/:nickname', async (req, res) => {
         
