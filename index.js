@@ -62,6 +62,7 @@ let create_game_handler = (_) => {
             $('#lonely').fadeIn();
             document.querySelector("#lonely").classList.add("d-flex");
             document.querySelector("#lonely").classList.remove("d-none");
+            window.scrollTo(0, 0);
 
             setTimeout(function() {
                 get_game_state()
@@ -140,6 +141,7 @@ let join_game_handler = (_) => {
                 document.querySelector("#choices-display").classList.add("d-flex");
                 document.querySelector("#game-buttons").classList.remove("d-none");
                 document.querySelector("#game-buttons").classList.add("d-flex");
+                window.scrollTo(0, 0);
                 get_game_state()
             }, 1500);
 
@@ -318,7 +320,9 @@ let updateUI = () => {
         document.querySelector("#host-name").innerHTML = "&nbsp;-&nbsp;";
         document.querySelector("#guest-name").innerHTML = "&nbsp;-&nbsp;";
         document.querySelector("#game-container").classList.add("d-none");
+        document.querySelector("#game-container").classList.remove("d-flex");
         document.querySelector("#forms-area").classList.remove("d-none");
+        window.scrollTo(0, 0);
         return;
     }
     
@@ -326,6 +330,7 @@ let updateUI = () => {
     document.querySelector("#forms-area").classList.add("d-none");
     $("#game-container").fadeIn();
     document.querySelector("#game-container").classList.remove("d-none");
+    document.querySelector("#game-container").classList.add("d-flex");
 
     const hostChoice = (gameState.hostChoice == null) ? "question" : gameState.hostChoice;
     const guestChoice = (gameState.guestChoice == null) ? "question" : gameState.guestChoice;
@@ -370,6 +375,7 @@ let updateUI = () => {
                 document.querySelector("#choices-display").classList.add("d-flex");
                 document.querySelector("#game-buttons").classList.remove("d-none");
                 document.querySelector("#game-buttons").classList.add("d-flex");
+                window.scrollTo(0, 0);
             }, 1500);
 
         // The guest left the game.
