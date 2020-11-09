@@ -74,7 +74,7 @@ db.once('open', function() {
         newGame.hostReady = false;
         newGame.guestReady = false;
 
-        console.log(`Game ID ${gameID}: creating game with for host '${nickname}'...`);
+        console.log(`Game ID ${gameID}: creating game for host '${nickname}'...`);
         
         // Save the game.
         newGame.save(function (err, result) {
@@ -164,17 +164,6 @@ db.once('open', function() {
         if (game != null) {
             res.status(200);
             res.send(game);
-
-            // Game ended, clear choices after 3 seconds.
-            /*
-            if (game.hostChoice != null && game.guestChoice != null) {
-                setTimeout(function() {
-                    game.hostChoice = null;
-                    game.guestChoice = null;
-                    game.save();
-                }, 3000);
-            }
-            */
 
         } else {
             res.status(404);
