@@ -53,7 +53,7 @@ db.once('open', function() {
     const Game = mongoose.model('Game', gameSchema);
     
     // When a user connects.
-    io.sockets.on('connection', (socket) => {
+    io.sockets.on('connect', (socket) => {
 
         console.log(`${socket.id} connected through Socket.io.`);
 
