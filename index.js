@@ -35,7 +35,7 @@ const outcomes = {
 let create_game_handler = (_) => {
 
     const nicknameField = document.getElementById("create-nickname");
-    const nickname = nicknameField.value.trim();
+    let nickname = nicknameField.value.trim();
 
     nicknameField.value = "";
     nicknameField.focus();
@@ -93,7 +93,7 @@ let join_game_handler = (_) => {
     
     const nicknameField = document.getElementById("join-nickname");
     const gameIDField = document.getElementById("join-id");
-    const nickname = nicknameField.value.trim();
+    let nickname = nicknameField.value.trim();
     const gameIDToJoin = gameIDField.value.trim();
     
     // If the fields are empty, cancel.
