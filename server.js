@@ -32,10 +32,10 @@ db.once('open', function() {
         gameID: { type: String, required: true, unique: true },
         nicknameHost: { type: String, required: true },
         nicknameGuest: { type: String },
-        hostChoice: String,
-        guestChoice: String,
-        hostReady: Boolean,
-        guestReady: Boolean
+        choiceHost: String,
+        choiceGuest: String,
+        readyHost: Boolean,
+        readyGuest: Boolean
     });
 
     const Game = mongoose.model('Game', gameSchema);
@@ -77,10 +77,10 @@ db.once('open', function() {
         newGame.gameID = gameID;
         newGame.nicknameHost = nickname;
         newGame.nicknameGuest = null;
-        newGame.hostChoice = null;
-        newGame.guestChoice = null;
-        newGame.hostReady = false;
-        newGame.guestReady = false;
+        newGame.choiceHost = null;
+        newGame.choiceGuest = null;
+        newGame.readyHost = false;
+        newGame.readyGuest = false;
 
         console.log(`Game ID ${gameID}: creating game for host '${nickname}'...`);
         
@@ -143,10 +143,10 @@ db.once('open', function() {
         if (game != null) {
             
             if (isHost) {
-                game.hostChoice = choice;
-                console.log(`Game ID ${gameID}: host '${game.nicknameHost}' chose '${choice}'.`);
+                game.choiceHost = choice;
+                console.log(`choiceGueste ID ${gameID}: host '${game.nicknameHost}' chose '${choice}'.`);
             } else {
-                game.guestChoice = choice;
+                game.choiceGuest = choice;
                 console.log(`Game ID ${gameID}: guest '${game.nicknameGuest}' chose '${choice}'.`);
             }
 
@@ -192,16 +192,16 @@ db.once('open', function() {
 
             if (status == "ready") {
                 if (isHost) {
-                    game.hostReady = true;
+                    game.readyHost = true;
                 } else {
-                    game.guestReady = true;
+                    game.readyGuest = true;
                 }
 
-                if (game.hostReady && game.guestReady) {
-                    game.hostReady = false;
-                    game.guestReady = false;
-                    game.hostChoice = null;
-                    game.guestChoice = null;
+                if (game.readyHost && game.readyGuest) {
+                    game.readyHost = false;
+                    game.readyGuest = false;
+                    game.choiceHost = null;
+                    game.choiceGuest = null;
                 }
 
             } else if (status == "exit") {
@@ -212,10 +212,10 @@ db.once('open', function() {
                     return;
                 } else {
                     game.nicknameGuest = null;
-                    game.hostReady = false;
-                    game.guestReady = false;
-                    game.hostChoice = null;
-                    game.guestChoice = null;
+                    game.readyHost = false;
+                    game.readyGuest = false;
+                    game.choiceHost = null;
+                    game.choiceGuest = null;
                 }
             }
 
