@@ -35,7 +35,9 @@ db.once('open', function() {
         choiceHost: String,
         choiceGuest: String,
         readyHost: Boolean,
-        readyGuest: Boolean
+        readyGuest: Boolean,
+        lastPingHost: Date,
+        lastPingGuest: Date
     });
 
     const Game = mongoose.model('Game', gameSchema);
@@ -81,6 +83,8 @@ db.once('open', function() {
         newGame.choiceGuest = null;
         newGame.readyHost = false;
         newGame.readyGuest = false;
+        newGame.lastPingHost = Date.now();
+        newGame.lastPingGuest = null;
 
         console.log(`Game ID ${gameID}: creating game for host '${nickname}'...`);
         
@@ -117,6 +121,9 @@ db.once('open', function() {
             }
 
             game.nicknameGuest = nickname;
+            game.choiceGuest = null;
+            game.readyGuest = false;
+            game.lastPingGuest = Date.now();
             game.save();
             
             console.log(`Game ID ${gameID}: guest '${nickname}' joined '${game.nicknameHost}'s game.`);
@@ -145,9 +152,11 @@ db.once('open', function() {
             if (isHost) {
                 game.choiceHost = choice;
                 console.log(`choiceGueste ID ${gameID}: host '${game.nicknameHost}' chose '${choice}'.`);
+                game.lastPingHost = Date.now();
             } else {
                 game.choiceGuest = choice;
                 console.log(`Game ID ${gameID}: guest '${game.nicknameGuest}' chose '${choice}'.`);
+                game.lastPingGuest = Date.now();
             }
 
             game.save();
@@ -170,6 +179,39 @@ db.once('open', function() {
         const game = await Game.findOne({gameID}).exec();
 
         if (game != null) {
+
+            // Update the last ping date.
+            // If one of the players has timed out, remove them (or delete the game).
+            if (isHost) {
+                game.lastPingHost = Date.now();
+
+                // 5 seconds timeout
+                // If the guest timed out...
+                if (Date.now() - game.lastPingGuest > 5000) {
+                    game.nicknameGuest = null;
+                    game.readyHost = false;
+                    game.readyGuest = false;
+                    game.choiceHost = null;
+                    game.choiceGuest = null;
+                    game.lastPingHost = Date.now();
+                    game.lastPingGuest = null;
+                }
+
+            } else {
+                game.lastPingGuest = Date.now();
+
+                // 5 seconds timeout
+                // If the host timed out...
+                if (Date.now() - game.lastPingHost > 5000) {
+                    game.deleteOne();
+                    res.status(200);
+                    res.send("player_left");
+                    return;
+                }
+            }
+
+            game.save();
+
             res.status(200);
             res.send(game);
 
@@ -193,8 +235,10 @@ db.once('open', function() {
             if (status == "ready") {
                 if (isHost) {
                     game.readyHost = true;
+                    game.lastPingHost = Date.now();
                 } else {
                     game.readyGuest = true;
+                    game.lastPingGuest = Date.now();
                 }
 
                 if (game.readyHost && game.readyGuest) {
@@ -216,6 +260,8 @@ db.once('open', function() {
                     game.readyGuest = false;
                     game.choiceHost = null;
                     game.choiceGuest = null;
+                    game.lastPingHost = Date.now();
+                    game.lastPingGuest = null;
                 }
             }
 
