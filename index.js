@@ -48,6 +48,8 @@ let create_game_handler = (_) => {
         return;
     }
 
+    nickname = encodeURI(nickname);
+
     axios
     .post(`${ADDRESS}/create/${nickname}`) 
     .then(resp => {
@@ -116,6 +118,8 @@ let join_game_handler = (_) => {
         return;
     }
     
+    nickname = encodeURI(nickname);
+
     axios
     .get(`${ADDRESS}/join/${gameIDToJoin},${nickname}`)
     .then(resp => {
