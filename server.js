@@ -54,7 +54,7 @@ db.once('open', function() {
         let newGame = new Game();
 
         // Limit to 20 characters.
-        const nickname = req.params["nickname"].substring(0, 20);
+        const nickname = decodeURI(req.params["nickname"]).substring(0, 20);
         console.log(`Received create game request for host ${nickname}.`);  
       
         // Generate a valid and unique game ID.
@@ -94,7 +94,7 @@ db.once('open', function() {
         
         const gameID = req.params["gameID"];
         // Limit name to 20 characters.
-        const nickname = req.params["nickname"].substring(0, 20);;
+        const nickname = decodeURI(req.params["nickname"]).substring(0, 20);
         console.log(`Received request from ${nickname} to join game ${gameID}.`);
       
         const game = await Game.findOne({gameID}).exec();
