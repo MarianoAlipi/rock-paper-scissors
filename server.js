@@ -173,9 +173,10 @@ db.once('open', function() {
     });
 
     // Get the current state of the game.
-    app.get('/getState/:gameID', async (req, res) => {
+    app.get('/getState/:gameID,:isHost', async (req, res) => {
 
         const gameID = req.params["gameID"];
+        const isHost = req.params["isHost"] == "true";
         const game = await Game.findOne({gameID}).exec();
 
         if (game != null) {
