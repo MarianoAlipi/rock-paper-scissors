@@ -118,7 +118,7 @@ let join_game_handler = (_) => {
         return;
     }
     
-    nickname = encodeURI(nickname);
+    nickname = encodeURIComponent(nickname);
 
     axios
     .get(`${ADDRESS}/join/${gameIDToJoin},${nickname}`)
