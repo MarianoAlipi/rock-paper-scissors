@@ -1,3 +1,5 @@
+const VERSION = "1.0.1";
+
 let gameID = -1;
 let isHost = false;
 let gameState = null;
@@ -526,6 +528,9 @@ document.addEventListener("DOMContentLoaded", (_) => {
     
     const createNicknameField = document.querySelector("#create-nickname");
     const joinNicknameField = document.querySelector("#join-nickname");
+
+    // Write the version.
+    document.querySelector("#version").textContent = `${VERSION}`;
 
     // The buttons' behavior.
     document.querySelector('#create-btn').addEventListener('click', (event) => { create_game_handler() });
