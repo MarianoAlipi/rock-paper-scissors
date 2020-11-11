@@ -1,3 +1,5 @@
+const VERSION ="1.0.1";
+
 const express = require('express')
 const cors = require('cors')
 const axios = require('axios')
@@ -44,8 +46,14 @@ db.once('open', function() {
   
     // Default route.
     app.get('/', (req, res) => {
-        res.status(204);
+        res.status(200);
         res.send("Hello, world!");
+    });
+
+    // Get version.
+    app.get('/version', (req, res) => {
+        res.status(200);
+        res.send(VERSION);
     });
   
     // Create game.
