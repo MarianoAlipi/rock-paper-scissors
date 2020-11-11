@@ -48,7 +48,7 @@ let create_game_handler = (_) => {
         return;
     }
 
-    nickname = encodeURI(nickname);
+    nickname = encodeURIComponent(nickname);
 
     axios
     .post(`${ADDRESS}/create/${nickname}`) 
