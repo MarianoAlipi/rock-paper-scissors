@@ -188,14 +188,16 @@ db.once('open', function() {
 
                 // 5 seconds timeout
                 // If the guest timed out...
-                if (Date.now() - game.lastPingGuest > 5000) {
-                    game.nicknameGuest = null;
-                    game.readyHost = false;
-                    game.readyGuest = false;
-                    game.choiceHost = null;
-                    game.choiceGuest = null;
-                    game.lastPingHost = Date.now();
-                    game.lastPingGuest = null;
+                if (game.nicknameGuest != null && game.lastPingGuest != null) {
+                    if (Date.now() - game.lastPingGuest > 5000) {
+                        game.nicknameGuest = null;
+                        game.readyHost = false;
+                        game.readyGuest = false;
+                        game.choiceHost = null;
+                        game.choiceGuest = null;
+                        game.lastPingHost = Date.now();
+                        game.lastPingGuest = null;
+                    }
                 }
 
             } else {
