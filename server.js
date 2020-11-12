@@ -151,7 +151,7 @@ db.once('open', function() {
             
             if (isHost) {
                 game.choiceHost = choice;
-                console.log(`choiceGueste ID ${gameID}: host '${game.nicknameHost}' chose '${choice}'.`);
+                console.log(`Game ID ${gameID}: host '${game.nicknameHost}' chose '${choice}'.`);
                 game.lastPingHost = Date.now();
             } else {
                 game.choiceGuest = choice;
@@ -190,12 +190,10 @@ db.once('open', function() {
                 // If the guest timed out...
                 if (game.nicknameGuest != null && game.lastPingGuest != null) {
                     if (Date.now() - game.lastPingGuest > 5000) {
+                        console.log("TIMING OUT?");
                         game.nicknameGuest = null;
                         game.readyHost = false;
                         game.readyGuest = false;
-                        game.choiceHost = null;
-                        game.choiceGuest = null;
-                        game.lastPingHost = Date.now();
                         game.lastPingGuest = null;
                     }
                 }
