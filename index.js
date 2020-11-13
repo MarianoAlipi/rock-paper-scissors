@@ -222,7 +222,7 @@ let get_game_state = () => {
     }
     
     axios
-    .get(`${ADDRESS}/getState/${gameID},${isHost}`)
+    .get(`${ADDRESS}/getState/${gameID}`)
     .then(resp => {
         if (resp.status == 200) {
             gameState = resp.data;
