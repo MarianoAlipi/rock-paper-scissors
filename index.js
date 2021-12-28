@@ -1,4 +1,4 @@
-const VERSION = "1.0.1";
+const VERSION = "1.0.2";
 
 let gameID = -1;
 let isHost = false;
@@ -52,9 +52,34 @@ let create_game_handler = (_) => {
 
     nickname = encodeURIComponent(nickname);
 
+    // Show message while waiting for game to be created...
+    if (!swal.getState().isOpen) {
+        swal({
+            title: `Creating game...`,
+            icon: "./img/waiting.gif",
+            buttons: {
+                "leave": {
+                    text: "Cancel",
+                    value: "leave",
+                    className: "btn btn-danger"
+                }
+            }
+        }).then((value) => {
+            switch(value) {
+                case "leave":
+                    update_player_status("exit");
+                    break;
+                default:
+                    break;
+            }
+        });
+    }
+
     axios
     .post(`${ADDRESS}/create/${nickname}`) 
     .then(resp => {
+
+        swal.close();
 
         if (resp.status == 201) {
             gameState = resp.data;
@@ -122,10 +147,35 @@ let join_game_handler = (_) => {
     
     nickname = encodeURIComponent(nickname);
 
+    // Show message while waiting to join game...
+    if (!swal.getState().isOpen) {
+        swal({
+            title: `Joining game...`,
+            icon: "./img/waiting.gif",
+            buttons: {
+                leave: {
+                    text: "Cancel",
+                    value: "leave",
+                    className: "btn btn-danger"
+                }
+            }
+        }).then((value) => {
+            switch(value) {
+                case "leave":
+                    update_player_status("exit");
+                    break;
+                default:
+                    break;
+            }
+        });
+    }
+
     axios
     .get(`${ADDRESS}/join/${gameIDToJoin},${nickname}`)
     .then(resp => {
         
+        swal.close();
+
         if (resp.status == 200) {
             gameState = resp.data;
             gameID = resp.data.gameID;
